@@ -1,112 +1,103 @@
-#define _CRT_SECURE_NO_WARNINGS    // Visual Studio¿¡¼­ strcpy °æ°í(¿À·ù)¸¦ ¸·±â À§ÇÑ ¼³Á¤
+#define _CRT_SECURE_NO_WARNINGS    
 #include <stdio.h>
-#include <string.h>    // memset, memcpy, strcpy ÇÔ¼ö°¡ ¼±¾ðµÈ Çì´õ ÆÄÀÏ
-#include <stddef.h>    // offsetof ¸ÅÅ©·Î°¡ Á¤ÀÇµÈ Çì´õ ÆÄÀÏ
+#include <string.h>    
+#include <stddef.h>    
 
-#define ITEM_COUNT 3     // ÀÎº¥Åä¸® Ä­ ¼ö
-#define TYPE_WEAPON 1    // ¾ÆÀÌÅÛ Á¾·ù: ¹«±â
-#define TYPE_POTION 2    // ¾ÆÀÌÅÛ Á¾·ù: Æ÷¼Ç
+#define ITEM_COUNT 3     
+#define TYPE_WEAPON 1    
+#define TYPE_POTION 2    
 
-// ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡ Unit 51. ±¸Á¶Ã¼ ¸â¹ö Á¤·Ä ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
-struct NormalInfo {      // Á¤·ÄÀ» µû·Î ÁöÁ¤ÇÏÁö ¾ÊÀº ±¸Á¶Ã¼
-    char grade;          // 1¹ÙÀÌÆ®
-    int price;           // 4¹ÙÀÌÆ®
+struct NormalInfo {     
+    char grade;         
+    int price;          
 };
 
-#pragma pack(push, 1)    // Áö±ÝºÎÅÍ 1¹ÙÀÌÆ® ´ÜÀ§·Î Á¤·Ä
-struct PackedInfo {      // 1¹ÙÀÌÆ® Á¤·ÄÀ» Àû¿ëÇÑ ±¸Á¶Ã¼
-    char grade;          // 1¹ÙÀÌÆ®
-    int price;           // 4¹ÙÀÌÆ®
+#pragma pack(push, 1)   
+struct PackedInfo {      
+    char grade;          
+    int price;           
 };
-#pragma pack(pop)        // Á¤·Ä ¼³Á¤À» ¿ø·¡´ë·Î µÇµ¹¸²
+#pragma pack(pop)       
 
-// ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡ Unit 54. °ø¿ëÃ¼ ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
-union Data {             // ¸ðµç ¸â¹ö°¡ °°Àº ¸Þ¸ð¸® °ø°£À» ÇÔ²² »ç¿ë
-    char c;              // 1¹ÙÀÌÆ®
-    short s;             // 2¹ÙÀÌÆ®
-    int i;               // 4¹ÙÀÌÆ®
+union Data {             
+    char c;              
+    short s;             
+    int i;              
 };
 
-// ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡ Unit 55. ±¸Á¶Ã¼¿Í °ø¿ëÃ¼ È°¿ë ¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡¦¡
 struct Item {
-    char name[20];       // ¾ÆÀÌÅÛ ÀÌ¸§
-    int type;            // ¾ÆÀÌÅÛ Á¾·ù (TYPE_WEAPON ¶Ç´Â TYPE_POTION)
-    union {              // ÀÍ¸í °ø¿ëÃ¼: ÀÌ¸§ÀÌ ¾ø¾î¼­ ¸â¹ö¿¡ ¹Ù·Î Á¢±Ù °¡´É
-        int attack;      // ¹«±âÀÏ ¶§ »ç¿ë: °ø°Ý·Â
-        int heal;        // Æ÷¼ÇÀÏ ¶§ »ç¿ë: È¸º¹·®
+    char name[20];      
+    int type;            
+    union {              
+        int attack;      
+        int heal;        
     };
 };
 
-// ÀÎº¥Åä¸®(±¸Á¶Ã¼ ¹è¿­)¸¦ Ãâ·ÂÇÏ´Â ÇÔ¼ö
 void printInventory(struct Item items[], int count)
 {
-    int i;    // ¹Ýº¹¹®¿¡ »ç¿ëÇÒ º¯¼ö
+    int i;    
 
     for (i = 0; i < count; i++)
     {
         if (items[i].type == TYPE_WEAPON)
-            printf("  [%d] %s (¹«±â) °ø°Ý·Â: %d\n", i, items[i].name, items[i].attack);
+            printf("  [%d] %s (ë¬´ê¸°) ê³µê²©ë ¥: %d\n", i, items[i].name, items[i].attack);
         else if (items[i].type == TYPE_POTION)
-            printf("  [%d] %s (Æ÷¼Ç) È¸º¹·®: %d\n", i, items[i].name, items[i].heal);
+            printf("  [%d] %s (í¬ì…˜) íšŒë³µëŸ‰: %d\n", i, items[i].name, items[i].heal);
         else
-            printf("  [%d] (ºó Ä­)\n", i);
+            printf("  [%d] (ë¹ˆ ì¹¸)\n", i);
     }
 }
 
 int main()
 {
-    // ¦¡¦¡ 1. ±¸Á¶Ã¼ ¸â¹ö Á¤·Ä (Unit 51) ¦¡¦¡
-    printf("=== 1. ±¸Á¶Ã¼ ¸â¹ö Á¤·Ä ===\n");
-    printf("NormalInfo Å©±â: %d¹ÙÀÌÆ®\n", (int)sizeof(struct NormalInfo));
-    printf("PackedInfo Å©±â: %d¹ÙÀÌÆ®\n", (int)sizeof(struct PackedInfo));
-    printf("NormalInfo¿¡¼­ priceÀÇ À§Ä¡: %d\n", (int)offsetof(struct NormalInfo, price));
-    printf("PackedInfo¿¡¼­ priceÀÇ À§Ä¡: %d\n", (int)offsetof(struct PackedInfo, price));
+    printf("=== 1. êµ¬ì¡°ì²´ ë©¤ë²„ ì •ë ¬ ===\n");
+    printf("NormalInfo í¬ê¸°: %dë°”ì´íŠ¸\n", (int)sizeof(struct NormalInfo));
+    printf("PackedInfo í¬ê¸°: %dë°”ì´íŠ¸\n", (int)sizeof(struct PackedInfo));
+    printf("NormalInfoì—ì„œ priceì˜ ìœ„ì¹˜: %d\n", (int)offsetof(struct NormalInfo, price));
+    printf("PackedInfoì—ì„œ priceì˜ ìœ„ì¹˜: %d\n", (int)offsetof(struct PackedInfo, price));
 
-    // ¦¡¦¡ 2. ±¸Á¶Ã¼ ¹è¿­ ¼±¾ð + memsetÀ¸·Î ÃÊ±âÈ­ (Unit 53, 52) ¦¡¦¡
-    printf("\n=== 2. ±¸Á¶Ã¼ ¹è¿­À» memsetÀ¸·Î 0 ÃÊ±âÈ­ ===\n");
-    struct Item inventory[ITEM_COUNT];          // ±¸Á¶Ã¼ ¹è¿­ ¼±¾ð
-    memset(inventory, 0, sizeof(inventory));    // ¹è¿­ ÀüÃ¼¸¦ 0À¸·Î Ã¤¿ò
+    printf("\n=== 2. êµ¬ì¡°ì²´ ë°°ì—´ì„ memsetìœ¼ë¡œ 0 ì´ˆê¸°í™” ===\n");
+    struct Item inventory[ITEM_COUNT];          // êµ¬ì¡°ì²´ ë°°ì—´ ì„ ì–¸
+    memset(inventory, 0, sizeof(inventory));    // ë°°ì—´ ì „ì²´ë¥¼ 0ìœ¼ë¡œ ì±„ì›€
     printInventory(inventory, ITEM_COUNT);
 
-    // ¦¡¦¡ 3. ±¸Á¶Ã¼ ¹è¿­ÀÇ ¿ä¼Ò¿¡ °ª ³Ö±â (Unit 53, 55) ¦¡¦¡
-    printf("\n=== 3. ¾ÆÀÌÅÛ ³Ö±â ===\n");
-    strcpy(inventory[0].name, "Ã¶°Ë");
+    printf("\n=== 3. ì•„ì´í…œ ë„£ê¸° ===\n");
+    strcpy(inventory[0].name, "ì² ê²€");
     inventory[0].type = TYPE_WEAPON;
-    inventory[0].attack = 50;                   // ¹«±âÀÌ¹Ç·Î attack »ç¿ë
+    inventory[0].attack = 50;                   // ë¬´ê¸°ì´ë¯€ë¡œ attack ì‚¬ìš©
 
-    strcpy(inventory[1].name, "»¡°£ Æ÷¼Ç");
+    strcpy(inventory[1].name, "ë¹¨ê°„ í¬ì…˜");
     inventory[1].type = TYPE_POTION;
-    inventory[1].heal = 30;                     // Æ÷¼ÇÀÌ¹Ç·Î heal »ç¿ë
+    inventory[1].heal = 30;                     // í¬ì…˜ì´ë¯€ë¡œ heal ì‚¬ìš©
 
-    strcpy(inventory[2].name, "³ª¹« È°");
+    strcpy(inventory[2].name, "ë‚˜ë¬´ í™œ");
     inventory[2].type = TYPE_WEAPON;
     inventory[2].attack = 35;
 
     printInventory(inventory, ITEM_COUNT);
 
-    // ¦¡¦¡ 4. memcpy·Î ±¸Á¶Ã¼ ¹è¿­ º¹»ç (Unit 52) ¦¡¦¡
-    printf("\n=== 4. memcpy·Î ÀÎº¥Åä¸® ¹é¾÷ ===\n");
+    printf("\n=== 4. memcpyë¡œ ì¸ë²¤í† ë¦¬ ë°±ì—… ===\n");
     struct Item backup[ITEM_COUNT];
-    memcpy(backup, inventory, sizeof(inventory));   // inventory ³»¿ëÀ» backup¿¡ ±×´ë·Î º¹»ç
+    memcpy(backup, inventory, sizeof(inventory));   // inventory ë‚´ìš©ì„ backupì— ê·¸ëŒ€ë¡œ ë³µì‚¬
 
-    inventory[0].attack = 999;                      // ¿øº»¸¸ ¼öÁ¤ (Ã¶°Ë °­È­!)
+    inventory[0].attack = 999;                      // ì›ë³¸ë§Œ ìˆ˜ì • (ì² ê²€ ê°•í™”!)
 
-    printf("¿øº» ÀÎº¥Åä¸®:\n");
+    printf("ì›ë³¸ ì¸ë²¤í† ë¦¬:\n");
     printInventory(inventory, ITEM_COUNT);
-    printf("¹é¾÷ ÀÎº¥Åä¸®:\n");
+    printf("ë°±ì—… ì¸ë²¤í† ë¦¬:\n");
     printInventory(backup, ITEM_COUNT);
 
-    // ¦¡¦¡ 5. °ø¿ëÃ¼ (Unit 54) ¦¡¦¡
-    printf("\n=== 5. °ø¿ëÃ¼ ===\n");
+    printf("\n=== 5. ê³µìš©ì²´ ===\n");
     union Data d;
-    printf("Data Å©±â: %d¹ÙÀÌÆ®\n", (int)sizeof(d));   // °¡Àå Å« ¸â¹ö(int)ÀÇ Å©±â
+    printf("Data í¬ê¸°: %dë°”ì´íŠ¸\n", (int)sizeof(d));   // ê°€ìž¥ í° ë©¤ë²„(int)ì˜ í¬ê¸°
 
-    d.i = 65;                                   // int ¸â¹ö¿¡ 65¸¦ ÀúÀå
+    d.i = 65;                                   // int ë©¤ë²„ì— 65ë¥¼ ì €ìž¥
     printf("d.i = %d\n", d.i);
-    printf("d.s = %d\n", d.s);                  // °°Àº °ø°£À» ¾²¹Ç·Î 65
-    printf("d.c = %c\n", d.c);                  // 65´Â ¹®ÀÚ 'A'ÀÇ ASCII ÄÚµå
+    printf("d.s = %d\n", d.s);                  // ê°™ì€ ê³µê°„ì„ ì“°ë¯€ë¡œ 65
+    printf("d.c = %c\n", d.c);                  // 65ëŠ” ë¬¸ìž 'A'ì˜ ASCII ì½”ë“œ
 
-    printf("Ã¶°ËÀÇ attack: %d, heal: %d\n", inventory[0].attack, inventory[0].heal);
+    printf("ì² ê²€ì˜ attack: %d, heal: %d\n", inventory[0].attack, inventory[0].heal);
 
     return 0;
 }
